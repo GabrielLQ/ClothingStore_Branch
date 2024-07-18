@@ -1,0 +1,7 @@
+{
+    "name": "gabriel/branch",
+    "type": "library",
+    "require": {
+        "steampixel/simple-php-router": "^0.7.1"
+    }
+}
