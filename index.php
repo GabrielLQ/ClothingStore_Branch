@@ -21,7 +21,10 @@ header("Access-Control-Allow-Headers: *");
 header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
 
 require_once __DIR__ . '/vendor/autoload.php';
+
 use Steampixel\Route;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key
 
 //Ver todas las tiendas disponibles
 Route::add('/ClothingStore_Branch/v1/ViewBranchs/', function() {
@@ -74,22 +77,123 @@ Route::add('/ClothingStore_Branch/v1/CreateBranchs/',function(){
 
 //Modificar la informacion de una tienda 
 Route::add('/ClothingStore_Branch/v1/UpdateBranchs/',function(){
+    require_once "./controller/03.Controller_PUT.php";
+    // Recibir datos del cuerpo de la solicitud POST
+    $RecivedData = json_decode(file_get_contents('php://input'), true);
 
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        http_response_code(400); // Bad Request
+        die(json_encode(array('message' => 'JSON inválido')));
+    }
+
+    $RecivedData1 = [
+        //'Id_' => FILTER_SANITIZE_NUMBER_INT,
+        'NameBranch_' => FILTER_SANITIZE_SPECIAL_CHARS,
+        'Street_' => FILTER_SANITIZE_SPECIAL_CHARS,
+        'Description_' => FILTER_SANITIZE_SPECIAL_CHARS ,
+    ];
+
+    $RecivedData = filter_var_array($RecivedData,$RecivedData1);
+
+    if(!(   isset($RecivedData['NameBranch_'])&&
+            isset($RecivedData['Street_'])
+    )){
+        http_response_code(403);
+        die(json_encode(array('msg' => 'Parametros no apropiados')));
+    }
+
+    $InsertBranch_ = new ClothingStore_Branch_POST();
+    $InsertBranch_ -> CreateBranch(
+        $RecivedData['NameBranch_'],
+        $RecivedData['Street_'],
+        $RecivedData['Description_'] ?? ''
+    );
 },'PUT');
 
 //Modificar el nombre de la tienda
 Route::add('/ClothingStore_Branch/v1/UpdateNameStore/',function(){
+    require_once "./controller/04.Controller_PATCH.php";
+    $RecivedData = json_decode(file_get_contents('php://input  '),true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        http_response_code(400); // Bad Request
+        die(json_encode(array('message' => 'JSON inválido')));
+    }
+    $RecivedData1 = [
+        'Id_' => FILTER_SANITIZE_NUMBER_INT,
+        'NameBranch_' => FILTER_SANITIZE_SPECIAL_CHARS
+    ];
 
+     $RecivedData = filter_var_array($RecivedData,$RecivedData1);
+
+    if(!(   isset($RecivedData['Id_'])&&
+            isset($RecivedData['NameBranch_'])
+    )){
+        http_response_code(403);
+        die(json_encode(array('msg' => 'Parametros no apropiados')));
+    }
+
+    $InsertBranch_ = new ClothingStore_Branch_POST();
+    $InsertBranch_ -> CreateBranch(
+        $RecivedData['Id_'],
+        $RecivedData['NameBranch_']
+    );   
 },'PATCH');
 
 //Modificar la direccion de la tienda
 Route::add('/ClothingStore_Branch/v1/UpdateStreetStore/',function(){
+    require_once "./controller/04.Controller_PATCH.php";
+    $RecivedData = json_decode(file_get_contents('php://input  '),true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        http_response_code(400); // Bad Request
+        die(json_encode(array('message' => 'JSON inválido')));
+    }
+    $RecivedData1 = [
+        'Id_' => FILTER_SANITIZE_NUMBER_INT,
+        'Street_' => FILTER_SANITIZE_SPECIAL_CHARS
+    ];
 
+     $RecivedData = filter_var_array($RecivedData,$RecivedData1);
+
+    if(!(   isset($RecivedData['Id_'])&&
+            isset($RecivedData['Street_'])
+    )){
+        http_response_code(403);
+        die(json_encode(array('msg' => 'Parametros no apropiados')));
+    }
+
+    $InsertBranch_ = new ClothingStore_Branch_POST();
+    $InsertBranch_ -> CreateBranch(
+        $RecivedData['Id_'],
+        $RecivedData['Description_'] ?? ''
+    );
 },'PATCH');
 
 //Modificar la descripcion de la tienda
 Route::add('/ClothingStore_Branch/v1/UpdateDescriptionStore/',function(){
+    require_once "./controller/04.Controller_PATCH.php";
+    $RecivedData = json_decode(file_get_contents('php://input  '),true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        http_response_code(400); // Bad Request
+        die(json_encode(array('message' => 'JSON inválido')));
+    }
+    $RecivedData1 = [
+        'Id_' => FILTER_SANITIZE_NUMBER_INT,
+        'Description_' => FILTER_SANITIZE_SPECIAL_CHARS
+    ];
 
+     $RecivedData = filter_var_array($RecivedData,$RecivedData1);
+
+    if(!(   isset($RecivedData['Id_'])
+    )){
+        http_response_code(403);
+        die(json_encode(array('msg' => 'Parametros no apropiados')));
+    }
+
+    $InsertBranch_ = new ClothingStore_Branch_POST();
+    $InsertBranch_ -> CreateBranch(
+        $RecivedData['Id_'],
+        $RecivedData['Street_']
+    );
 },'PATCH');
 
 Route::add('/ClothingStore_Branch/v1/__version__/', function() {
