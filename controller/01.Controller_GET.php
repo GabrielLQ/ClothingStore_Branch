@@ -2,7 +2,7 @@
 include_once "00.Connection.php";
 class ClothingStore_Branch_GET extends ClothingStore_Branch {
 	public function ViewBranches(){
-		$Queried = 'SELECT * FROM branch';
+		$Queried = 'SELECT * FROM `Branch`';
 		try {
 
 				$qRead_ = $this->conn->prepare($Queried);
@@ -36,7 +36,7 @@ class ClothingStore_Branch_GET extends ClothingStore_Branch {
 	}
 
 	public function ViewBranchId($Id_) {
-    	$Queried = 'SELECT * FROM branch WHERE Id = ?';
+    	$Queried = 'SELECT * FROM `Branch` WHERE Id = ?';
     
 	    try {
 	        $qRead_ = $this->conn->prepare($Queried);

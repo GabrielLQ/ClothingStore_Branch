@@ -2,7 +2,7 @@
 include_once "00.Connection.php";
 class ClothingStore_Branch_POST extends ClothingStore_Branch{
 	public function CreateBranch($NameBranch_,$Street_,$Description_){
-		$Queried = 'INSERT INTO `branch`(
+		$Queried = 'INSERT INTO `Branch`(
 			`NameBranch`,
 			`Street`,
 			`Description`
@@ -17,7 +17,7 @@ class ClothingStore_Branch_POST extends ClothingStore_Branch{
 
 			if($qCreateBranch->execute()){
 
-				 $qGetLastId = $this->conn->query("SELECT @@identity AS Id")->fetch(PDO::FETCH_ASSOC);
+				$qGetLastId = $this->conn->query("SELECT @@identity AS Id")->fetch(PDO::FETCH_ASSOC);
                 $lastInsertId = $qGetLastId['Id'];
 
 				echo json_encode([
